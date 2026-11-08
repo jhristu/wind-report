@@ -1,0 +1,230 @@
+// Classic 5x7 bitmap font. Each glyph is 5 columns, 7 rows, LSB = top row.
+const GLYPHS: Record<string, number[]> = {
+  " ": [0x00, 0x00, 0x00, 0x00, 0x00],
+  "-": [0x08, 0x08, 0x08, 0x08, 0x08],
+  ".": [0x00, 0x00, 0x60, 0x60, 0x00],
+  ":": [0x00, 0x36, 0x36, 0x00, 0x00],
+  "/": [0x20, 0x10, 0x08, 0x04, 0x02],
+  "+": [0x08, 0x08, 0x3e, 0x08, 0x08],
+  "!": [0x00, 0x00, 0x5f, 0x00, 0x00],
+  "?": [0x02, 0x01, 0x51, 0x09, 0x06],
+  "'": [0x00, 0x07, 0x00, 0x00, 0x00],
+  "°": [0x06, 0x09, 0x09, 0x06, 0x00],
+  "0": [0x3e, 0x51, 0x49, 0x45, 0x3e],
+  "1": [0x00, 0x42, 0x7f, 0x40, 0x00],
+  "2": [0x42, 0x61, 0x51, 0x49, 0x46],
+  "3": [0x21, 0x41, 0x45, 0x4b, 0x31],
+  "4": [0x18, 0x14, 0x12, 0x7f, 0x10],
+  "5": [0x27, 0x45, 0x45, 0x45, 0x39],
+  "6": [0x3c, 0x4a, 0x49, 0x49, 0x30],
+  "7": [0x01, 0x71, 0x09, 0x05, 0x03],
+  "8": [0x36, 0x49, 0x49, 0x49, 0x36],
+  "9": [0x06, 0x49, 0x49, 0x29, 0x1e],
+  A: [0x7e, 0x11, 0x11, 0x11, 0x7e],
+  B: [0x7f, 0x49, 0x49, 0x49, 0x36],
+  C: [0x3e, 0x41, 0x41, 0x41, 0x22],
+  D: [0x7f, 0x41, 0x41, 0x22, 0x1c],
+  E: [0x7f, 0x49, 0x49, 0x49, 0x41],
+  F: [0x7f, 0x09, 0x09, 0x09, 0x01],
+  G: [0x3e, 0x41, 0x49, 0x49, 0x7a],
+  H: [0x7f, 0x08, 0x08, 0x08, 0x7f],
+  I: [0x00, 0x41, 0x7f, 0x41, 0x00],
+  J: [0x20, 0x40, 0x41, 0x3f, 0x01],
+  K: [0x7f, 0x08, 0x14, 0x22, 0x41],
+  L: [0x7f, 0x40, 0x40, 0x40, 0x40],
+  M: [0x7f, 0x02, 0x0c, 0x02, 0x7f],
+  N: [0x7f, 0x04, 0x08, 0x10, 0x7f],
+  O: [0x3e, 0x41, 0x41, 0x41, 0x3e],
+  P: [0x7f, 0x09, 0x09, 0x09, 0x06],
+  Q: [0x3e, 0x41, 0x51, 0x21, 0x5e],
+  R: [0x7f, 0x09, 0x19, 0x29, 0x46],
+  S: [0x46, 0x49, 0x49, 0x49, 0x31],
+  T: [0x01, 0x01, 0x7f, 0x01, 0x01],
+  U: [0x3f, 0x40, 0x40, 0x40, 0x3f],
+  V: [0x1f, 0x20, 0x40, 0x20, 0x1f],
+  W: [0x3f, 0x40, 0x38, 0x40, 0x3f],
+  X: [0x63, 0x14, 0x08, 0x14, 0x63],
+  Y: [0x07, 0x08, 0x70, 0x08, 0x07],
+  Z: [0x61, 0x51, 0x49, 0x45, 0x43],
+  a: [0x20, 0x54, 0x54, 0x54, 0x78],
+  b: [0x7f, 0x48, 0x44, 0x44, 0x38],
+  c: [0x38, 0x44, 0x44, 0x44, 0x20],
+  d: [0x38, 0x44, 0x44, 0x48, 0x7f],
+  e: [0x38, 0x54, 0x54, 0x54, 0x18],
+  f: [0x08, 0x7e, 0x09, 0x01, 0x02],
+  g: [0x18, 0xa4, 0xa4, 0xa4, 0x7c],
+  h: [0x7f, 0x08, 0x04, 0x04, 0x78],
+  i: [0x00, 0x44, 0x7d, 0x40, 0x00],
+  j: [0x20, 0x40, 0x44, 0x3d, 0x00],
+  k: [0x7f, 0x10, 0x28, 0x44, 0x00],
+  l: [0x00, 0x41, 0x7f, 0x40, 0x00],
+  m: [0x7c, 0x04, 0x18, 0x04, 0x78],
+  n: [0x7c, 0x08, 0x04, 0x04, 0x78],
+  o: [0x38, 0x44, 0x44, 0x44, 0x38],
+  p: [0xfc, 0x24, 0x24, 0x24, 0x18],
+  q: [0x18, 0x24, 0x24, 0x24, 0xfc],
+  r: [0x7c, 0x08, 0x04, 0x04, 0x08],
+  s: [0x48, 0x54, 0x54, 0x54, 0x20],
+  t: [0x04, 0x3f, 0x44, 0x40, 0x20],
+  u: [0x3c, 0x40, 0x40, 0x20, 0x7c],
+  v: [0x1c, 0x20, 0x40, 0x20, 0x1c],
+  w: [0x3c, 0x40, 0x30, 0x40, 0x3c],
+  x: [0x44, 0x28, 0x10, 0x28, 0x44],
+  y: [0x4c, 0x90, 0x90, 0x90, 0x7c],
+  z: [0x44, 0x64, 0x54, 0x4c, 0x44],
+};
+
+export const GLYPH_WIDTH = 5;
+export const GLYPH_HEIGHT = 7;
+export const GLYPH_ADVANCE = 6;
+
+function glyphFor(char: string): number[] {
+  const plain = char.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return GLYPHS[plain] ?? GLYPHS[plain.toUpperCase()] ?? GLYPHS["?"];
+}
+
+export function textWidth(text: string, scale = 1, bold = false): number {
+  if (!text.length) return 0;
+  const advance = (bold ? GLYPH_ADVANCE + 1 : GLYPH_ADVANCE) * scale;
+  return text.length * advance - scale;
+}
+
+export function drawText(
+  frame: Uint8Array,
+  text: string,
+  x: number,
+  y: number,
+  options: {
+    scale?: number;
+    black?: boolean;
+    bold?: boolean;
+    width?: number;
+    align?: "left" | "right" | "center";
+  } = {},
+): void {
+  const scale = options.scale ?? 1;
+  const black = options.black ?? true;
+  const bold = options.bold ?? false;
+  const width = options.width ?? 200;
+  const advance = (bold ? GLYPH_ADVANCE + 1 : GLYPH_ADVANCE) * scale;
+  let cursor = x;
+  const drawnWidth = textWidth(text, scale, bold);
+  if (options.align === "right") cursor = x - drawnWidth;
+  if (options.align === "center") cursor = x - Math.floor(drawnWidth / 2);
+
+  for (const char of text) {
+    const glyph = glyphFor(char);
+    for (let col = 0; col < GLYPH_WIDTH; col++) {
+      const bits = glyph[col];
+      for (let row = 0; row < GLYPH_HEIGHT; row++) {
+        if ((bits >> row) & 1) {
+          fillRect(frame, cursor + col * scale, y + row * scale, scale, scale, black, width);
+          if (bold) {
+            fillRect(frame, cursor + col * scale + scale, y + row * scale, scale, scale, black, width);
+          }
+        }
+      }
+    }
+    cursor += advance;
+  }
+}
+
+export function fillRect(
+  frame: Uint8Array,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  black = true,
+  frameWidth = 200,
+): void {
+  const x0 = Math.max(0, x);
+  const y0 = Math.max(0, y);
+  const x1 = Math.min(frameWidth, x + width);
+  const y1 = Math.min(frame.length / (frameWidth / 8), y + height);
+  for (let py = y0; py < y1; py++) {
+    for (let px = x0; px < x1; px++) {
+      setPixel(frame, px, py, black, frameWidth);
+    }
+  }
+}
+
+export function setPixel(frame: Uint8Array, x: number, y: number, black = true, frameWidth = 200): void {
+  if (x < 0 || y < 0 || x >= frameWidth || y >= frame.length / (frameWidth / 8)) return;
+  const index = y * (frameWidth / 8) + (x >> 3);
+  const bit = 7 - (x & 7);
+  if (black) frame[index] &= ~(1 << bit);
+  else frame[index] |= 1 << bit;
+}
+
+function drawLine(
+  frame: Uint8Array,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  black: boolean,
+  frameWidth = 200,
+): void {
+  let x = x0;
+  let y = y0;
+  const dx = Math.abs(x1 - x0);
+  const dy = -Math.abs(y1 - y0);
+  const sx = x0 < x1 ? 1 : -1;
+  const sy = y0 < y1 ? 1 : -1;
+  let err = dx + dy;
+
+  for (;;) {
+    setPixel(frame, x, y, black, frameWidth);
+    if (x === x1 && y === y1) break;
+    const e2 = 2 * err;
+    if (e2 >= dy) {
+      err += dy;
+      x += sx;
+    }
+    if (e2 <= dx) {
+      err += dx;
+      y += sy;
+    }
+  }
+}
+
+export function drawArrow(
+  frame: Uint8Array,
+  cx: number,
+  cy: number,
+  degrees: number,
+  black = true,
+  size = 4,
+  frameWidth = 200,
+  thickness = 1,
+): void {
+  const heading = ((degrees + 180) * Math.PI) / 180;
+  const dx = Math.sin(heading);
+  const dy = -Math.cos(heading);
+  const tipX = Math.round(cx + dx * size);
+  const tipY = Math.round(cy + dy * size);
+  const tailX = Math.round(cx - dx * size);
+  const tailY = Math.round(cy - dy * size);
+
+  const brush: Array<[number, number]> = [];
+  for (let ox = 0; ox < thickness; ox++) {
+    for (let oy = 0; oy < thickness; oy++) brush.push([ox, oy]);
+  }
+  const line = (x0: number, y0: number, x1: number, y1: number) => {
+    for (const [ox, oy] of brush) drawLine(frame, x0 + ox, y0 + oy, x1 + ox, y1 + oy, black, frameWidth);
+  };
+
+  line(tailX, tailY, tipX, tipY);
+
+  const headLength = Math.max(3, Math.round(size * 1.4));
+  for (const side of [-1, 1]) {
+    const angle = heading + Math.PI + side * (Math.PI / 4);
+    line(
+      tipX,
+      tipY,
+      Math.round(tipX + Math.sin(angle) * headLength),
+      Math.round(tipY - Math.cos(angle) * headLength),
+    );
+  }
+}
