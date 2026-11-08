@@ -1,0 +1,12 @@
+#pragma once
+
+// Copy this file to config.h and fill in your values.
+
+#define WIFI_SSID "your-wifi"
+#define WIFI_PASSWORD "your-password"
+
+// Use the raw frame endpoint, not the PNG preview.
+#define WORKER_URL "https://wind-report.YOUR-SUBDOMAIN.workers.dev/frame"
+
+// Must match DEVICE_TOKEN in the Worker. Leave empty to disable.
+#define DEVICE_TOKEN ""

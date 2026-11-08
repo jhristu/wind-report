@@ -1,0 +1,12 @@
+.env.local
+.arduino/
+worker/node_modules/
+worker/.wrangler/
+worker/.dev.vars
+worker/wrangler.toml
+worker/preview.png
+worker/preview.pbm
+worker/preview-real.png
+firmware/wind_report/config.h
+firmware/wind_report/preview.png
+.DS_Store
