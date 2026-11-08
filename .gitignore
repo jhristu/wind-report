@@ -1,12 +1,31 @@
+# Secrets and local environment
+.env
+.env.*
 .env.local
+!.env.example
+!.env.*.example
+
+# Arduino CLI cache and downloads
 .arduino/
-worker/node_modules/
-worker/.wrangler/
-worker/.dev.vars
+
+# Node / Wrangler artifacts
+node_modules/
+.wrangler/
+.dev.vars
+*.log
+
+# Local Wrangler config (use wrangler.toml.example)
 worker/wrangler.toml
-worker/preview.png
-worker/preview.pbm
-worker/preview-real.png
+
+# Local firmware config (use config.h.example)
 firmware/wind_report/config.h
-firmware/wind_report/preview.png
+
+# Generated previews
+worker/preview*.png
+worker/preview*.pbm
+firmware/wind_report/preview*.png
+firmware/wind_report/preview*.pbm
+
+# OS / editor cruft
 .DS_Store
+Thumbs.db
