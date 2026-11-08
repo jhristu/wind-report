@@ -1,4 +1,4 @@
-import { drawArrow, drawText, fillRect, textWidth } from "./font";
+import { drawArrow, drawText, drawTextScaled, fillRect, textWidth, textWidthScaled } from "./font";
 import type { LiveWind, Slot } from "./types";
 
 export const FRAME_WIDTH = 200;
@@ -29,35 +29,37 @@ function valueLabel(value: number | null): string {
   return value == null ? "--" : String(Math.round(value));
 }
 
-function drawSpot(frame: Uint8Array, spot: string, space: number): void {
-  let scale = 2;
-  let bold = true;
-  let advance = 14;
-  if (textWidth(spot, scale, bold) > space) {
-    scale = 1;
-    bold = true;
-    advance = 7;
+const SPOT_SCALE = 1.5;
+
+function drawSpot(frame: Uint8Array, spot: string, right: number, space: number): void {
+  let text = spot;
+  while (text.length > 0 && textWidthScaled(text, SPOT_SCALE, true) > space) {
+    text = text.slice(0, -1);
   }
-  const maxChars = Math.max(1, Math.floor((space + scale) / advance));
-  drawText(frame, spot.slice(0, maxChars), 6, TOP_Y + (scale === 2 ? 0 : 4), {
-    scale,
-    bold,
-    align: "left",
-  });
+  text = text.trimEnd();
+  if (!text) return;
+
+  drawTextScaled(frame, text, right, TOP_Y, SPOT_SCALE, { bold: true, align: "right" });
 }
 
 function drawTopLine(frame: Uint8Array, spot: string, live: LiveWind | null | undefined): void {
-  drawSpot(frame, spot, 190);
-  if (!live) return;
+  if (!live) {
+    drawSpot(frame, spot, 196, 188);
+    return;
+  }
 
-  const liveText = `${valueLabel(live.windKt)} kt`;
-  drawText(frame, liveText, 6, 16, { scale: 1, bold: true });
+  const windText = valueLabel(live.windKt);
+  drawText(frame, windText, 6, TOP_Y, { scale: 2, bold: true });
+  let liveEnd = 6 + textWidth(windText, 2, true);
 
   if (live.directionDeg != null) {
     const snapped = (Math.round(live.directionDeg / 45) % 8) * 45;
-    const arrowX = 6 + textWidth(liveText, 1, true) + 7;
-    drawArrow(frame, arrowX, 19, snapped, true, 4, 200, ARROW_THICKNESS);
+    const arrowX = liveEnd + 8;
+    drawArrow(frame, arrowX, TOP_Y + 7, snapped, true, ARROW_SIZE, 200, ARROW_THICKNESS);
+    liveEnd = arrowX + 6;
   }
+
+  drawSpot(frame, spot, 196, 196 - (liveEnd + 8));
 }
 
 export function renderFrame(input: FrameInput): Uint8Array {

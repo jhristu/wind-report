@@ -89,6 +89,56 @@ export function textWidth(text: string, scale = 1, bold = false): number {
   return text.length * advance - scale;
 }
 
+export function textWidthScaled(text: string, scale: number, bold = false): number {
+  if (!text.length) return 0;
+  const advance = (bold ? GLYPH_ADVANCE + 1 : GLYPH_ADVANCE) * scale;
+  const glyph = (GLYPH_WIDTH + (bold ? 1 : 0)) * scale;
+  return Math.round((text.length - 1) * advance + glyph);
+}
+
+export function drawTextScaled(
+  frame: Uint8Array,
+  text: string,
+  x: number,
+  y: number,
+  scale: number,
+  options: {
+    black?: boolean;
+    bold?: boolean;
+    width?: number;
+    align?: "left" | "right" | "center";
+  } = {},
+): void {
+  const black = options.black ?? true;
+  const bold = options.bold ?? false;
+  const frameWidth = options.width ?? 200;
+  const advance = (bold ? GLYPH_ADVANCE + 1 : GLYPH_ADVANCE) * scale;
+  const full = textWidthScaled(text, scale, bold);
+  let cursor = x;
+  if (options.align === "right") cursor = x - full;
+  if (options.align === "center") cursor = x - Math.floor(full / 2);
+
+  for (const char of text) {
+    const glyph = glyphFor(char);
+    for (let col = 0; col < GLYPH_WIDTH; col++) {
+      const bits = glyph[col];
+      for (let row = 0; row < GLYPH_HEIGHT; row++) {
+        if ((bits >> row) & 1) {
+          const x0 = Math.round(cursor + col * scale);
+          const x1 = Math.round(cursor + (col + 1) * scale);
+          const y0 = Math.round(y + row * scale);
+          const y1 = Math.round(y + (row + 1) * scale);
+          fillRect(frame, x0, y0, x1 - x0, y1 - y0, black, frameWidth);
+          if (bold) {
+            fillRect(frame, x1, y0, Math.max(1, Math.round(scale)), y1 - y0, black, frameWidth);
+          }
+        }
+      }
+    }
+    cursor += advance;
+  }
+}
+
 export function drawText(
   frame: Uint8Array,
   text: string,
