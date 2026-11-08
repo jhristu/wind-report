@@ -1,0 +1,19 @@
+{
+  "name": "wind-report-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "preview": "tsx test/preview.ts",
+    "preview:real": "tsx test/preview-real.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261108.1",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.158.0"
+  }
+}
