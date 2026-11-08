@@ -4,7 +4,7 @@ compatibility_date = "2026-01-01"
 workers_dev = true
 
 [vars]
-SPOT_ID = "REPLACE_ME"
+SPOT_ID = "1016586"
 MODEL = "harmnl"
 START = "day:8"
 LIVE_STATION = "ijmuiden.buitenhaven"
